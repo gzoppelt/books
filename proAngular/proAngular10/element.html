@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <title>AngularJS Demo</title>
+    <link rel="stylesheet" href="/lib/bootstrap.css">
+    <link rel="stylesheet" href="/lib/bootstrap-theme.css">
+    <script src="/lib/angular.js"></script>
+    <script>
+        var app = angular.module("exampleApp", []);
+
+        app.controller("defaultController", function ($scope){
+            $scope.todos = [
+                { action: "Get groceries", complete: false },
+                { action: "Call plumber", complete: false },
+                { action: "Buy running shoes", complete: true },
+                { action: "Buy flowers", complete: false },
+                { action: "Call family", complete: false }
+            ];
+            $scope.buttonNames = ["Red", "Green", "Blue"];
+            $scope.data = {
+                rowColor: "Blue",
+                columnColor: "Green"
+            };
+            $scope.handleEvent = function (e) {
+                //console.log("Event type: " + e.type);
+                $scope.data.columnColor = e.type == "mouseover" ? "Green" : "Blue";
+            };
+        });
+
+        app.controller("tapController", function($scope){
+            $scope.message = "Tap Me!";
+        });
+
+        app.directive("tap", function(){
+            return function(scope, element, attributes){
+                element.on("click touchstart touchend", function(){
+                    scope.$apply(attributes["tap"]);
+                });
+            }
+        });
+    </script>
+    <style>
+        .Red {background-color: lightcoral }
+        .Green {background-color: lightgreen }
+        .Blue {background-color: lightblue }
+    </style>
+</head>
+<body>
+    <div class="panel" ng-controller="tapController">
+        <div class="well" tap="message = 'Tapped!'">
+            {{message}}
+        </div>
+    </div>
+    <div id="todoPanel" class="panel" ng-controller="defaultController">
+        <h3 class="panel-header">To Do List</h3>
+
+        <div class="well">
+            <span ng-repeat="button in buttonNames">
+                <button class="btn btn-info" ng-click="data.rowColor = button">
+                    {{button}}
+                </button>
+            </span>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr><th>#</th><th>Action</th><th>Done</th></tr>
+            </thead>
+            <tr ng-repeat="item in todos" ng-class="data.rowColor"
+                ng-mouseenter="handleEvent($event)"
+                ng-mouseleave="handleEvent($event)">
+                <td>{{$index+1}}</td>
+                <td>{{item.action}}</td>
+                <td ng-class="data.columnColor">{{item.complete}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <title>Forms</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/angularjs/lib/bootstrap.css">
+    <link rel="stylesheet" href="/angularjs/lib/bootstrap-theme.css">
+    <script src="/angularjs/lib/angular.js"></script>
+    <script>
+        app = angular.module("exampleApp", []);
+        app.controller("DefaultController", function($scope){
+            $scope.requireValue = true;
+            $scope.matchPattern = new RegExp("^[a-z]");
+        });
+    </script>
+    <style>
+        .true { color: darkgreen; font-weight: bold;}
+        .false{ color: darkred; font-weight: bold;}
+    </style>
+</head>
+<body>
+    <div id="todoPanel" class="panel" ng-controller="DefaultController">
+        <form name="myForm" novalidate>
+            <div class="well">
+                <div class="form-group">
+                    <label>Text:</label>
+                    <input name="sample" class="form-control" ng-model="inputValue" ng-required="requireValue"
+                           ng-minlength="3" ng-maxlength="10" ng-pattern="matchPattern">
+                </div>
+                <p><b>{{ inputValue }}</b></p>
+                <p>Required Error: {{ myForm.sample.$error.required }}</p>
+                <p>Min Length Error: {{ myForm.sample.$error.minlength }}</p>
+                <p>Max Length Error: {{ myForm.sample.$error.maxlength }}</p>
+                <p>Pattern Error: {{ myForm.sample.$error.pattern }}</p>
+                <p>Element Valid:
+                    <span class="{{myForm.sample.$valid}}">
+                        {{ myForm.sample.$valid }}
+                    </span>
+                </p>
+            </div>
+
+            <div class="well">
+                <div class="checkbox">
+                    <label>
+                        <input name="checkbox_sample" type="checkbox" ng-model="checkboxValue"
+                               ng-true-value="Hurrah!" ng-false-value="Boo!">
+                        This is a checkbox.
+                    </label>
+                </div>
+                <p>Checkbox Value: {{ checkboxValue }}</p>
+            </div>
+
+            <div class="well">
+                <div class="form-group">
+                    <textarea name="textarea_sample" cols="40" rows="3"
+                              ng-model="textValue" ng-required="requireValue"
+                              ng-minlength="3" ng-maxlength="10" ng-pattern="mactchPattern">
+
+                    </textarea>
+                    <p>Required Error: {{ myForm.textarea_sample.$error.required }}</p>
+                    <p>Min Length Error: {{ myForm.textarea_sample.$error.minlength }}</p>
+                    <p>Max Length Error: {{ myForm.textarea_sample.$error.maxlength }}</p>
+                    <p>Pattern Error: {{ myForm.textarea_sample.$error.pattern }}</p>
+                    <p>Element Valid:
+                        <span class="{{myForm.textarea_sample.$valid}}">
+                            {{ myForm.textarea_sample.$valid }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

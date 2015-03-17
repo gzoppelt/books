@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html ng-app="formsApp">
+<head>
+    <title>Forms</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../lib/bootstrap.css">
+    <link rel="stylesheet" href="../../lib/bootstrap-theme.css">
+    <script src="../../lib/angular.js"></script>
+    <script>
+        var fa = angular.module("formsApp", []);
+
+        fa.controller("formsController", function($scope){
+
+            $scope.addUser = function (userDetails) {
+                if (myForm.$valid) {
+                    $scope.message =         userDetails.name
+                                    + " (" + userDetails.email
+                                    +") (" + userDetails.agreed + ")";
+                } else {
+                    $scope.showValidation = true;
+                }
+            };
+
+            $scope.message = "Ready";
+
+            $scope.getError = function (error) {
+                if (angular.isDefined(error)) {
+                    //order is important: first the most specific ones
+                    if (error.email)    return "Please enter a valid email address";
+                    if (error.required) return "Please enter a value";
+                }
+            };
+        });
+    </script>
+    <style>
+        form.validate .ng-dirty.ng-valid {background-color: lightgreen;}
+        form.validate .ng-dirty.ng-invalid-required {background-color: lightpink;}
+        form.validate .ng-dirty.ng-invalid-email {background-color: lightgoldenrodyellow}
+        span.summary.ng-valid {color:green;}
+        span.summary.ng-invalid {color:red; font-weight: bold;}
+        div.error {color: red; font-weight: bold;}
+    </style>
+</head>
+<body>
+    <div id="todoPanel" class="panel" ng-controller="formsController">
+        <form name="myForm" novalidate ng-submit="addUser(newUser)"ng-class="showValidation ? 'validate' : '' ">
+            <div class="well">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input name="userName" type="text" class="form-control" required ng-model="newUser.name">
+                    <div class="error" ng-show="showValidation">
+                        {{getError(myForm.userName.$error)}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input name="userEmail" type="email" class="form-control" required ng-model="newUser.email">
+                    <div class="error" ng-show="showValidation">
+                        {{getError(myForm.userEmail.$error)}}
+
+                    </div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input name="agreed" type="checkbox" required ng-model="newUser.agreed">
+                        I agree to the terms and conditions
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    OK
+                </button>
+            </div>
+            <div class="well">
+                Message: {{ message }}
+                <div>
+                    Valid:
+                    <span class="summary" ng-class="myForm.$valid ? 'ng-valid' : 'ng-invalid'">
+                        {{ myForm.$valid }}
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

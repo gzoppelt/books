@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="sportStore">
+<head>
+    <title>SportStore</title>
+    <meta charset="utf-8">
+    <script src="/lib/angular.js"></script>
+    <script src="/lib/angular-route.js"></script>
+    <link rel="stylesheet" href="/lib/bootstrap.css">
+    <link rel="stylesheet" href="/lib/bootstrap-theme.css">
+    <script>
+        angular.module("sportStore", ["customFilters", "cart", "ngRoute"])
+            .config(function ($routeProvider) {
+                $routeProvider.when("/checkout", {
+                    templateUrl: "views/checkoutSummary.html"
+                });
+                $routeProvider.when("/products", {
+                    templateUrl: "views/productList.html"
+                });
+                $routeProvider.when("/complete", {
+                    templateUrl: "views/thankYou.html"
+                });
+                $routeProvider.when("/placeorder", {
+                    templateUrl: "views/placeOrder.html"
+                });
+                $routeProvider.otherwise({
+                    templateUrl: "views/productList.html"
+                });
+            })
+        ;
+    </script>
+    <script src="controllers/sportStore.js"></script>
+    <script src="filters/customFilters.js"></script>
+    <script src="controllers/productListControllers.js"></script>
+    <script src="controllers/checkoutControllers.js"></script>
+    <script src="components/cart/cart.js"></script>
+</head>
+<body ng-controller="sportStoreController">
+    <div class="navbar navbar-inverse">
+        <a class="banbar-brand" href="#">SPORT STORE</a>
+        <cart-summary/>
+    </div>
+
+    <div class="alert alert-danger" ng-show="data.error">
+        Error ({{data.error.status}}). The product data was not loaded.
+        <a href="app.html" class="alert-link">Click here to try again</a>
+    </div>
+
+    <ng-view/>
+</body>
+</html>
